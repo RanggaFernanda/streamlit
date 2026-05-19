@@ -1,0 +1,94 @@
+/* === BACKGROUND === */
+.stApp {
+    background: linear-gradient(135deg, #001f4d 0%, #003d99 100%) !important;
+}
+
+/* === Title === */
+.main-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Sub Title */
+.sub-title {
+    font-size: 18px;
+    color: #c9d6ff;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Card style */
+.input-card {
+    background: hwb(0 99% 0%);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(0, 0%, 100%);
+}
+
+/* Text area */
+textarea {
+    background: rgb(255, 255, 255) !important;
+    color: rgb(12, 10, 10) !important;
+    border-radius: 12px !important;
+    border: 1px solid #ede7e7 !important;
+    padding: 15px !important;
+}
+
+/* Button */
+.stButton>button {
+    background: linear-gradient(90deg, #0066ff, #33a1ff) !important;
+    color: white !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 20px !important;
+    border: none;
+}
+
+.stButton>button:hover {
+    background: linear-gradient(90deg, #1a75ff, #4db8ff) !important;
+}
+
+/* Sentiment Box */
+.result-box {
+    padding: 18px;
+    border-radius: 12px;
+    margin-top: 20px;
+    color: rgb(255, 248, 248);
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+
+    /* ==== FIXED LOGO LEFT TOP ==== */
+.logo-container {
+    position: fixed;
+    top: 20px;
+    left: 30px;
+    z-index: 999;
+    
+}
+
+
+
+/* Background halaman */
+.stApp {
+    background: linear-gradient(135deg, #002b6b, #003b8e);
+    color: rgb(1, 1, 1);
+    font-family: "Poppins", sans-serif;
+}
+
+.logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.logo-container img {
+    display: block;
+}
+}
