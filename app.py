@@ -101,7 +101,7 @@ def is_relevant(text, tokenizer):
 
     coverage = known_words / len(words)
 
-    return coverage >= 0.6
+    return coverage >= 0.8
 
 # ============== PREDIKSI ==============
 if st.button("🚀 Prediksi Sentimen"):
