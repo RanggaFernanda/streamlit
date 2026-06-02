@@ -84,6 +84,25 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# ============== DETEKSI RELEVANSI ==============
+
+def is_relevant(text, tokenizer):
+
+    words = text.lower().split()
+
+    if len(words) == 0:
+        return False
+
+    known_words = 0
+
+    for word in words:
+        if word in tokenizer.word_index:
+            known_words += 1
+
+    coverage = known_words / len(words)
+
+    return coverage >= 0.6
+
 # ============== PREDIKSI ==============
 if st.button("🚀 Prediksi Sentimen"):
 
@@ -92,37 +111,37 @@ if st.button("🚀 Prediksi Sentimen"):
 
     else:
 
-        # ===== CEK RELEVANSI DENGAN TOKENIZER =====
-        sequence_check = tokenizer.texts_to_sequences([text])[0]
+        # ===== TAHAP 1 : DETEKSI RELEVANSI =====
 
-        known_words = len(sequence_check)
-
-        # Threshold bisa disesuaikan
-        if known_words < 3:
+        if not is_relevant(text, tokenizer):
 
             st.markdown(
                 """
-                <div class='result-box' style='background:#616161;'>
-                    TIDAK RELEVAN
+                <div class='result-box'
+                style='background:#616161;'>
+                TIDAK RELEVAN
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
             st.markdown(
-                f"""
+                """
                 <div style="
-                    margin-top:15px;
-                    font-size:18px;
-                    text-align:center;
-                    color:white;">
-                    Teks tidak berkaitan dengan performa Timnas Indonesia
+                margin-top:15px;
+                font-size:18px;
+                text-align:center;
+                color:white;">
+                Teks tidak berkaitan dengan
+                performa Timnas Indonesia
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
         else:
+
+            # ===== TAHAP 2 : ANALISIS SENTIMEN =====
 
             sequence = tokenizer.texts_to_sequences([text])
 
@@ -155,8 +174,9 @@ if st.button("🚀 Prediksi Sentimen"):
 
             st.markdown(
                 f"""
-                <div class='result-box' style='{color}'>
-                    {label}
+                <div class='result-box'
+                style='{color}'>
+                {label}
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -165,15 +185,14 @@ if st.button("🚀 Prediksi Sentimen"):
             st.markdown(
                 f"""
                 <div style="
-                    margin-top:15px;
-                    font-size:18px;
-                    text-align:center;
-                    color:white;">
-                    <b>{keterangan}:</b> {nilai:.4f}
+                margin-top:15px;
+                font-size:18px;
+                text-align:center;
+                color:white;">
+                <b>{keterangan}:</b> {nilai:.4f}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
-
 
   
