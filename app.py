@@ -86,47 +86,94 @@ st.markdown(
 
 # ============== PREDIKSI ==============
 if st.button("🚀 Prediksi Sentimen"):
+
     if text.strip() == "":
         st.warning("Tolong masukkan teks terlebih dahulu!")
+
     else:
-        sequence = tokenizer.texts_to_sequences([text])
-        padded = pad_sequences(sequence, maxlen=MAXLEN)
-        prediction = model.predict(padded)[0][0]
 
-        prob_pos = float(prediction)
-        prob_neg = float(1 - prediction)
+        # ===== CEK RELEVANSI DENGAN TOKENIZER =====
+        sequence_check = tokenizer.texts_to_sequences([text])[0]
 
-        # Tentukan label + nilai
-        if prediction >= 0.5:
-            label = "POSITIF"
-            color = "background: #00c853;"   # hijau
-            nilai = prob_pos
-            keterangan = "Nilai Prediksi Positif"
+        known_words = len(sequence_check)
+
+        # Threshold bisa disesuaikan
+        if known_words < 3:
+
+            st.markdown(
+                """
+                <div class='result-box' style='background:#616161;'>
+                    TIDAK RELEVAN
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"""
+                <div style="
+                    margin-top:15px;
+                    font-size:18px;
+                    text-align:center;
+                    color:white;">
+                    Teks tidak berkaitan dengan performa Timnas Indonesia
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
         else:
-            label = "NEGATIF"
-            color = "background: #d50000;"   # merah
-            nilai = prob_neg
-            keterangan = "Nilai Prediksi Negatif"
 
-        # Kotak hasil
-        st.markdown(
-            f"<div class='result-box' style='{color}'>{label}</div>",
-            unsafe_allow_html=True
-        )
+            sequence = tokenizer.texts_to_sequences([text])
 
-        # TAMPILAN NILAI DENGAN WARNA PUTIH
-        st.markdown(
-            f"""
-            <div style="
-                margin-top:15px; 
-                font-size:18px; 
-                text-align:center; 
-                color:white;">
-                <b>{keterangan}:</b> {nilai:.4f}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+            padded = pad_sequences(
+                sequence,
+                maxlen=MAXLEN
+            )
+
+            prediction = model.predict(
+                padded,
+                verbose=0
+            )[0][0]
+
+            prob_pos = float(prediction)
+            prob_neg = float(1 - prediction)
+
+            if prediction >= 0.5:
+
+                label = "POSITIF"
+                color = "background:#00c853;"
+                nilai = prob_pos
+                keterangan = "Nilai Prediksi Positif"
+
+            else:
+
+                label = "NEGATIF"
+                color = "background:#d50000;"
+                nilai = prob_neg
+                keterangan = "Nilai Prediksi Negatif"
+
+            st.markdown(
+                f"""
+                <div class='result-box' style='{color}'>
+                    {label}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"""
+                <div style="
+                    margin-top:15px;
+                    font-size:18px;
+                    text-align:center;
+                    color:white;">
+                    <b>{keterangan}:</b> {nilai:.4f}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 
   
