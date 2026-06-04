@@ -106,7 +106,7 @@ def is_relevant(text, tokenizer):
 
     coverage = known_words / len(words)
 
-    return coverage >= 0.8
+    return coverage >= 0.7
 
 # ============== PREDIKSI ==============
 if st.button("🚀 Prediksi Sentimen"):
@@ -189,7 +189,7 @@ if st.button("🚀 Prediksi Sentimen"):
             prob_pos = float(prediction)
             prob_neg = float(1 - prediction)
 
-            if prediction >= 0.5:
+            if prediction >= 0.6:
 
                 label = "POSITIF"
                 color = "background:#00c853;"
