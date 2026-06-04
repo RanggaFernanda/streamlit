@@ -1,4 +1,3 @@
-
 import tensorflow as tf
 import streamlit as st
 import numpy as np
@@ -16,7 +15,7 @@ st.markdown(
     f"""
     <style>
     [data-testid="stAppViewContainer"] {{
-        background-image: 
+        background-image:
             linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
             url("data:image/png;base64,{bg_base64}");
         background-size: cover;
@@ -32,7 +31,7 @@ st.markdown(
 # ============== LOAD CSS ==============
 with open("style.css") as css:
     st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
-# ============== LOAD CSS ==============
+
 # ============== LOGO (LEFT TOP) ==============
 def load_image_base64(image_path):
     with open(image_path, "rb") as img:
@@ -49,26 +48,33 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # ============== LOAD MODEL ==============
 model = tf.keras.models.load_model(
     "sentiment_analysis_model.keras",
     compile=False
 )
 
-
 # ============== LOAD TOKENIZER ==============
 with open("tokenizer.pickle", "rb") as handle:
     tokenizer = pickle.load(handle)
 
-MAXLEN = 100  # Sesuaikan dengan training
+MAXLEN = 100
 
-st.markdown("<div class='main-title'>Performa Timnas Indonesia Kualifikasi Piala Dunia 2026</div>", unsafe_allow_html=True)
 # ============== HEADER ==============
-st.markdown("<div class='main-title'>🔍 Analisis Sentimen</div>", unsafe_allow_html=True)
-st.markdown("<div class='sub-title'>Model BiLSTM untuk mendeteksi sentimen positif atau negatif</div>", unsafe_allow_html=True)
+st.markdown(
+    "<div class='main-title'>Performa Timnas Indonesia Kualifikasi Piala Dunia 2026</div>",
+    unsafe_allow_html=True
+)
 
-#st.markdown("<div class='input-card'>", unsafe_allow_html=True)
+st.markdown(
+    "<div class='main-title'>🔍 Analisis Sentimen</div>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "<div class='sub-title'>Model BiLSTM untuk mendeteksi sentimen positif atau negatif</div>",
+    unsafe_allow_html=True
+)
 
 text = st.text_area("Masukkan kalimat:", height=150)
 
@@ -85,12 +91,11 @@ st.markdown(
 )
 
 # ============== DETEKSI RELEVANSI ==============
-
 def is_relevant(text, tokenizer):
 
     words = text.lower().split()
 
-    if len(words) == 0:
+    if len(words) < 3:
         return False
 
     known_words = 0
@@ -111,9 +116,36 @@ if st.button("🚀 Prediksi Sentimen"):
 
     else:
 
-        # ===== TAHAP 1 : DETEKSI RELEVANSI =====
+        words = text.strip().split()
 
-        if not is_relevant(text, tokenizer):
+        # ===== CEK MINIMAL 3 KATA =====
+        if len(words) < 3:
+
+            st.markdown(
+                """
+                <div class='result-box'
+                style='background:#616161;'>
+                TIDAK RELEVAN
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                """
+                <div style="
+                margin-top:15px;
+                font-size:18px;
+                text-align:center;
+                color:white;">
+                Minimal masukkan 3 kata untuk dianalisis
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        # ===== DETEKSI RELEVANSI =====
+        elif not is_relevant(text, tokenizer):
 
             st.markdown(
                 """
@@ -141,8 +173,7 @@ if st.button("🚀 Prediksi Sentimen"):
 
         else:
 
-            # ===== TAHAP 2 : ANALISIS SENTIMEN =====
-
+            # ===== ANALISIS SENTIMEN =====
             sequence = tokenizer.texts_to_sequences([text])
 
             padded = pad_sequences(
@@ -194,5 +225,3 @@ if st.button("🚀 Prediksi Sentimen"):
                 """,
                 unsafe_allow_html=True
             )
-
-  
